@@ -1,7 +1,16 @@
 # Roadmap
 
 ## v0.1 (current)
-The API mirrors deep_ep and correctness is verified on trn2. Routing, packing and unpacking run on the host (torch CPU); only the collectives run on the device.
+
+| | |
+|---|---|
+| ✅ Normal mode | `get_dispatch_layout` / `dispatch` (incl. cached dispatch) / `combine` |
+| ✅ Low-latency mode | `low_latency_dispatch` / `low_latency_combine` (BF16) |
+| ✅ Backends | `nki` (trn2 single node, LNC=2), `gloo` (CPU reference for tests) |
+| ✅ Correctness | Unit + torchrun tests, EP=4 and EP=2, 5 routing distributions, on both backends |
+| ✅ Benchmark suite | [benchmark.md](benchmark.md) |
+| 🚧 Data path | Routing, packing and unpacking run on the host (torch CPU); only the collectives run on the device |
+| ❌ Not yet | FP8, inter-node, async/hook overlap, `num_worst_tokens`, combine bias, LogFMT |
 
 ## Stage 2: keep data on the device (top performance priority)
 v0 end-to-end latency is in milliseconds and almost all of it goes to host packing and host↔device copies; the device-resident kernel itself takes only ~200–300 µs.

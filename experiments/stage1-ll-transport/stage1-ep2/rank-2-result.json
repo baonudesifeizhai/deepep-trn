@@ -1,0 +1,237 @@
+{
+  "rank": 2,
+  "ep_rank": 1,
+  "ep": 2,
+  "groups": [
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      3
+    ]
+  ],
+  "tokens_per_rank": 32,
+  "H": 2048,
+  "experts": 128,
+  "local_experts": 64,
+  "top_k": 8,
+  "send_capacity_rows": 64,
+  "row_width": 2112,
+  "layout": "DeepEP-LL fixed slot per source (has_rdispls=False), rank-dedup rows",
+  "versions": {
+    "torch": "2.14.0+cpu",
+    "torch-neuronx": "2.14.3.0.1966+02ecab1b2.dev",
+    "neuronx-cc": "2.0.404830.0a0+55f4bf89",
+    "nki": "0.7.0b1+34883233359.g2aa6a82a"
+  },
+  "cases": {
+    "balanced": {
+      "n_valid": 32,
+      "send_counts_rows": [
+        32,
+        32
+      ],
+      "recv_counts_rows": [
+        32,
+        32
+      ],
+      "dispatch_payload": "bitwise_equal",
+      "combine": {
+        "max_abs": 0.015625,
+        "relative_mean_abs": 0.0006620062049478292,
+        "passed": true
+      },
+      "first_call_s": {
+        "dispatch": 3.238911831009318,
+        "combine": 1.5474848659941927
+      }
+    },
+    "random": {
+      "n_valid": 32,
+      "send_counts_rows": [
+        32,
+        31
+      ],
+      "recv_counts_rows": [
+        32,
+        31
+      ],
+      "dispatch_payload": "bitwise_equal",
+      "combine": {
+        "max_abs": 0.01673269271850586,
+        "relative_mean_abs": 0.0010829184902831912,
+        "passed": true
+      },
+      "first_call_s": {
+        "dispatch": 0.0014057929947739467,
+        "combine": 0.001117520994739607
+      }
+    },
+    "hot_rank0": {
+      "n_valid": 32,
+      "send_counts_rows": [
+        32,
+        0
+      ],
+      "recv_counts_rows": [
+        0,
+        0
+      ],
+      "dispatch_payload": "bitwise_equal",
+      "combine": {
+        "max_abs": 0.01562356948852539,
+        "relative_mean_abs": 0.00141674664337188,
+        "passed": true
+      },
+      "first_call_s": {
+        "dispatch": 0.0014752449933439493,
+        "combine": 0.0015278969949577004
+      }
+    },
+    "ragged": {
+      "n_valid": 0,
+      "send_counts_rows": [
+        0,
+        0
+      ],
+      "recv_counts_rows": [
+        32,
+        0
+      ],
+      "dispatch_payload": "bitwise_equal",
+      "combine": {
+        "max_abs": 0.0,
+        "relative_mean_abs": 0.0,
+        "passed": true
+      },
+      "first_call_s": {
+        "dispatch": 0.0012079849984729663,
+        "combine": 0.001355967004201375
+      }
+    }
+  },
+  "status": "correctness_pass",
+  "bench": {
+    "case": "random",
+    "dispatch_a2av": {
+      "median_us": 173.6284799699206,
+      "min_us": 168.15348993986845,
+      "max_us": 186.87510993913747,
+      "per_rank_rounds_us": [
+        [
+          173.46740001812577,
+          164.28390008513816,
+          173.6284799699206,
+          164.13004996138625
+        ],
+        [
+          168.15348993986845,
+          160.5900800495874,
+          168.14985996461473,
+          160.49537996877916
+        ],
+        [
+          168.42344994074665,
+          168.00661993329413,
+          168.23972007841803,
+          168.2186999823898
+        ],
+        [
+          178.27365998527966,
+          166.13455998594873,
+          178.29314994742163,
+          166.07288998784497
+        ],
+        [
+          163.12040999764577,
+          186.80674998904578,
+          163.4104699769523,
+          186.87510993913747
+        ]
+      ],
+      "timing": "amortized synchronized host-wall; max across ranks per round"
+    },
+    "combine_a2av": {
+      "median_us": 170.76628006179817,
+      "min_us": 168.05984996608458,
+      "max_us": 178.05305004003458,
+      "per_rank_rounds_us": [
+        [
+          168.62959004356526,
+          170.76628006179817,
+          168.55149995535612,
+          170.6446398748085
+        ],
+        [
+          166.7327700124588,
+          171.8189199164044,
+          166.74143000273034,
+          171.81209012051113
+        ],
+        [
+          160.20338007365353,
+          178.05305004003458,
+          160.3540799987968,
+          178.03547001676634
+        ],
+        [
+          167.3456899879966,
+          168.05984996608458,
+          167.03068991773762,
+          167.8027400339488
+        ],
+        [
+          168.87366989976726,
+          162.56858012638986,
+          168.81285002455115,
+          162.65298007056117
+        ]
+      ],
+      "timing": "amortized synchronized host-wall; max across ranks per round"
+    },
+    "baseline_allreduce_ep_group": {
+      "shape": [
+        64,
+        2048
+      ],
+      "median_us": 141.51995012070984,
+      "min_us": 129.2710698908195,
+      "max_us": 146.89554998767562,
+      "per_rank_rounds_us": [
+        [
+          139.3907199962996,
+          141.5013600490056,
+          139.3287899554707,
+          141.51995012070984
+        ],
+        [
+          144.040339946514,
+          128.81090995506383,
+          143.97797000128776,
+          128.62589996075258
+        ],
+        [
+          120.61524001182988,
+          129.2710698908195,
+          121.43895990448073,
+          129.23889007652178
+        ],
+        [
+          118.5132899263408,
+          146.89554998767562,
+          118.60146987601183,
+          146.86424998217262
+        ],
+        [
+          121.22858999646269,
+          129.52219985891134,
+          121.07293005101383,
+          129.5692499843426
+        ]
+      ],
+      "timing": "amortized synchronized host-wall; max across ranks per round"
+    }
+  }
+}

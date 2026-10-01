@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.egg-info/
+neff_cache/
+*.neff
+*.pt
+results/**/*.log

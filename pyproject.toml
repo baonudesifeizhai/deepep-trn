@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deep-ep-trn"
+version = "0.1.0"
+description = "DeepEP-style MoE expert-parallel dispatch/combine for AWS Trainium (NKI)"
+requires-python = ">=3.10"
+dependencies = ["torch"]
+
+[project.optional-dependencies]
+neuron = ["torch-neuronx", "nki"]
+
+[tool.setuptools.packages.find]
+include = ["deep_ep_trn*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit"]
